@@ -1,53 +1,71 @@
-### Pseudo Code
+Structure Polynomial
+    coeff  // Coefficient of the term
+    expo   // Exponent of the term
 
-1. **Define Structure:**
-   - Structure `poly` with fields:
-     - `coeff`: integer (coefficient)
-     - `expo`: integer (exponent)
+Procedure inputPolynomial(Polynomial p[], Integer n)
+    Output "Enter number of terms: "
+    Input n
+    For i = 0 to n-1 do
+        Output "Term ", i+1, " - Enter the coefficient: "
+        Input p[i].coeff
+        Output "Enter the exponent: "
+        Input p[i].expo
+    End For
+    Return n
 
-2. **Function: `inputPoly(p)`**
-   - Initialize `n`
-   - PRINT "Enter number of terms: "
-   - READ `n`
-   - FOR `i` from 0 to `n-1` DO
-     - PRINT "Term i+1 - Enter the coefficient: "
-     - READ `c`
-     - PRINT "Enter the exponent: "
-     - READ `e`
-     - Set `p[i].coeff` to `c`
-     - Set `p[i].expo` to `e`
-   - RETURN `n`
+Procedure showPolynomial(Polynomial p[], Integer n)
+    For i = 0 to n-1 do
+        If i > 0 then
+            Output " + "
+        End If
+        Output p[i].coeff, "(x^", p[i].expo, ")"
+    End For
 
-3. **Function: `showPoly(p, n)`**
-   - FOR `i` from 0 to `n-1` DO
-     - IF `i > 0`, PRINT " + "
-     - PRINT `p[i].coeff(x^p[i].expo)`
+Procedure addPolynomials(Polynomial p1[], Polynomial p2[], Integer n1, Integer n2, Polynomial p3[])
+    i = 0
+    j = 0
+    k = 0
+    While i < n1 AND j < n2 do
+        If p1[i].expo == p2[j].expo then
+            p3[k].coeff = p1[i].coeff + p2[j].coeff
+            p3[k].expo = p1[i].expo
+            i = i + 1
+            j = j + 1
+        Else If p1[i].expo > p2[j].expo then
+            p3[k] = p1[i]
+            i = i + 1
+        Else
+            p3[k] = p2[j]
+            j = j + 1
+        End If
+        k = k + 1
+    End While
+    
+    While i < n1 do
+        p3[k] = p1[i]
+        i = i + 1
+        k = k + 1
+    End While
+    
+    While j < n2 do
+        p3[k] = p2[j]
+        j = j + 1
+        k = k + 1
+    End While
+    
+    Return k
 
-4. **Function: `addPolys(p1, p2, n1, n2, p3)`**
-   - Initialize `i`, `j`, `k` to 0
-   - WHILE `i < n1` AND `j < n2` DO
-     - IF `p1[i].expo == p2[j].expo` THEN
-       - Set `p3[k].coeff` to `p1[i].coeff + p2[j].coeff`
-       - Set `p3[k].expo` to `p1[i].expo`
-       - Increment `i`, `j`, `k`
-     - ELSE IF `p1[i].expo > p2[j].expo` THEN
-       - Set `p3[k]` to `p1[i]`
-       - Increment `i`, `k`
-     - ELSE
-       - Set `p3[k]` to `p2[j]`
-       - Increment `j`, `k`
-   - WHILE `i < n1` DO
-     - Set `p3[k]` to `p1[i]`
-     - Increment `i`, `k`
-   - WHILE `j < n2` DO
-     - Set `p3[k]` to `p2[j]`
-     - Increment `j`, `k`
-   - RETURN `k`
+Procedure main()
+    Declare Integer n1, n2, n3
+    Declare Polynomial poly1[10], poly2[10], p3[10]
+    
+    n1 = inputPolynomial(poly1)
+    n2 = inputPolynomial(poly2)
+    
+    n3 = addPolynomials(poly1, poly2, n1, n2, p3)
+    
+    Output "Result: "
+    showPolynomial(p3, n3)
 
-5. **Main Function**
-   - Set `n1` to `inputPoly(poly1)`
-   - Set `n2` to `inputPoly(poly2)`
-   - Set `n3` to `addPolys(poly1, poly2, n1, n2, p3)`
-   - PRINT "Result: "
-   - Call `showPoly(p3, n3)`
-   - END
+End Procedure
+
