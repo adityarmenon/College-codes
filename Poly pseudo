@@ -1,19 +1,21 @@
-Structure Polynomial
-    coeff  // Coefficient of the term
-    expo   // Exponent of the term
+Structure poly
+    coeff   // Coefficient of the term
+    expo    // Exponent of the term
 
-Procedure inputPolynomial(Polynomial p[], Integer n)
+Procedure inputPoly(p[])
     Output "Enter number of terms: "
     Input n
     For i = 0 to n-1 do
         Output "Term ", i+1, " - Enter the coefficient: "
-        Input p[i].coeff
+        Input c
         Output "Enter the exponent: "
-        Input p[i].expo
+        Input e
+        p[i].coeff = c
+        p[i].expo = e
     End For
     Return n
 
-Procedure showPolynomial(Polynomial p[], Integer n)
+Procedure showPoly(p[], n)
     For i = 0 to n-1 do
         If i > 0 then
             Output " + "
@@ -21,7 +23,7 @@ Procedure showPolynomial(Polynomial p[], Integer n)
         Output p[i].coeff, "(x^", p[i].expo, ")"
     End For
 
-Procedure addPolynomials(Polynomial p1[], Polynomial p2[], Integer n1, Integer n2, Polynomial p3[])
+Procedure addPolys(p1[], p2[], n1, n2, p3[])
     i = 0
     j = 0
     k = 0
@@ -57,15 +59,16 @@ Procedure addPolynomials(Polynomial p1[], Polynomial p2[], Integer n1, Integer n
 
 Procedure main()
     Declare Integer n1, n2, n3
-    Declare Polynomial poly1[10], poly2[10], p3[10]
+    Declare poly poly1[10], poly2[10], p3[10]
     
-    n1 = inputPolynomial(poly1)
-    n2 = inputPolynomial(poly2)
+    n1 = inputPoly(poly1)
+    n2 = inputPoly(poly2)
     
-    n3 = addPolynomials(poly1, poly2, n1, n2, p3)
+    n3 = addPolys(poly1, poly2, n1, n2, p3)
     
     Output "Result: "
-    showPolynomial(p3, n3)
+    showPoly(p3, n3)
 
 End Procedure
+
 
