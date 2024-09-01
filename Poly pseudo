@@ -1,0 +1,53 @@
+### Pseudo Code
+
+1. **Define Structure:**
+   - Structure `poly` with fields:
+     - `coeff`: integer (coefficient)
+     - `expo`: integer (exponent)
+
+2. **Function: `inputPoly(p)`**
+   - Initialize `n`
+   - PRINT "Enter number of terms: "
+   - READ `n`
+   - FOR `i` from 0 to `n-1` DO
+     - PRINT "Term i+1 - Enter the coefficient: "
+     - READ `c`
+     - PRINT "Enter the exponent: "
+     - READ `e`
+     - Set `p[i].coeff` to `c`
+     - Set `p[i].expo` to `e`
+   - RETURN `n`
+
+3. **Function: `showPoly(p, n)`**
+   - FOR `i` from 0 to `n-1` DO
+     - IF `i > 0`, PRINT " + "
+     - PRINT `p[i].coeff(x^p[i].expo)`
+
+4. **Function: `addPolys(p1, p2, n1, n2, p3)`**
+   - Initialize `i`, `j`, `k` to 0
+   - WHILE `i < n1` AND `j < n2` DO
+     - IF `p1[i].expo == p2[j].expo` THEN
+       - Set `p3[k].coeff` to `p1[i].coeff + p2[j].coeff`
+       - Set `p3[k].expo` to `p1[i].expo`
+       - Increment `i`, `j`, `k`
+     - ELSE IF `p1[i].expo > p2[j].expo` THEN
+       - Set `p3[k]` to `p1[i]`
+       - Increment `i`, `k`
+     - ELSE
+       - Set `p3[k]` to `p2[j]`
+       - Increment `j`, `k`
+   - WHILE `i < n1` DO
+     - Set `p3[k]` to `p1[i]`
+     - Increment `i`, `k`
+   - WHILE `j < n2` DO
+     - Set `p3[k]` to `p2[j]`
+     - Increment `j`, `k`
+   - RETURN `k`
+
+5. **Main Function**
+   - Set `n1` to `inputPoly(poly1)`
+   - Set `n2` to `inputPoly(poly2)`
+   - Set `n3` to `addPolys(poly1, poly2, n1, n2, p3)`
+   - PRINT "Result: "
+   - Call `showPoly(p3, n3)`
+   - END
