@@ -1,0 +1,12 @@
+Reverse the infix_expression
+for each symbol in reversed infix_expression:
+    if symbol is '(':
+        replace it with ')'
+    else if symbol is ')':
+        replace it with '('
+
+prefix_expression = postfix_conversion(reversed infix_expression)
+
+Reverse prefix_expression
+
+Return prefix_expression
