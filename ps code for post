@@ -1,0 +1,21 @@
+Initialize S as an empty stack
+Initialize P as an empty list
+
+for each symbol in infix_expression:
+    if symbol is operand:
+        append symbol to P
+    else if symbol is '(':
+        push symbol to S
+    else if symbol is ')':
+        while S.top() != '(':
+            append S.pop() to P
+        discard the '(' from S
+    else:  // the symbol is an operator
+        while S is not empty and precedence(S.top()) >= precedence(symbol):
+            append S.pop() to P
+        push symbol to S
+
+while S is not empty:
+    append S.pop() to P
+
+Return P as postfix_expression
