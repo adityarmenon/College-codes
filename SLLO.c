@@ -1,102 +1,123 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
-struct Node {
+// Define the node structure
+struct node {
     int data;
-    struct Node* next;
+    struct node *link;
 };
 
-// Insert node at the beginning
-void insertAtBeginning(struct Node** head, int newData) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = newData;
-    newNode->next = *head;
-    *head = newNode;
-}
-
-// Insert node at the end
-void insertAtEnd(struct Node** head, int newData) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    struct Node* last = *head;
-    newNode->data = newData;
-    newNode->next = NULL;
-
-    if (*head == NULL) {
-        *head = newNode;
+// Function to display the linked list
+void display(struct node *head) {
+    if (head == NULL) {
+        printf("List is empty\n");
         return;
     }
-
-    while (last->next != NULL) {
-        last = last->next;
-    }
-    last->next = newNode;
-}
-
-// Delete node from the beginning
-void deleteAtBeginning(struct Node** head) {
-    if (*head == NULL) {
-        printf("List is empty.\n");
-        return;
-    }
-    struct Node* temp = *head;
-    *head = (*head)->next;
-    free(temp);
-}
-
-// Display the list
-void printList(struct Node* node) {
-    if (node == NULL) {
-        printf("List is empty.\n");
-        return;
-    }
-
-    while (node != NULL) {
-        printf("%d -> ", node->data);
-        node = node->next;
+    struct node *ptr = head;
+    while (ptr != NULL) {
+        printf("%d -> ", ptr->data);
+        ptr = ptr->link;
     }
     printf("NULL\n");
 }
 
-// Menu-driven program
+// Function to insert a node at the front
+void insert_front(struct node **head, int data) {
+    struct node *new_node = (struct node*)malloc(sizeof(struct node));
+    new_node->data = data;
+    new_node->link = *head;
+    *head = new_node;
+}
+
+// Function to insert a node at the end
+void insert_end(struct node **head, int data) {
+    struct node *new_node = (struct node*)malloc(sizeof(struct node));
+    new_node->data = data;
+    new_node->link = NULL;
+
+    if (*head == NULL) {
+        *head = new_node;
+    } else {
+        struct node *ptr = *head;
+        while (ptr->link != NULL) {
+            ptr = ptr->link;
+        }
+        ptr->link = new_node;
+    }
+}
+
+// Function to delete a node from the front
+void delete_front(struct node **head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    struct node *temp = *head;
+    *head = (*head)->link;
+    free(temp);
+}
+
+// Function to delete a node from the end
+void delete_end(struct node **head) {
+    if (*head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    if ((*head)->link == NULL) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+    struct node *prev = NULL, *curr = *head;
+    while (curr->link != NULL) {
+        prev = curr;
+        curr = curr->link;
+    }
+    free(curr);
+    prev->link = NULL;
+}
+
 int main() {
-    struct Node* head = NULL;
+    struct node *head = NULL;
     int choice, value;
 
-    do {
-        printf("\n--- Menu ---\n");
-        printf("1. Insert at Beginning\n");
-        printf("2. Insert at End\n");
-        printf("3. Delete from Beginning\n");
-        printf("4. Display List\n");
-        printf("5. Exit\n");
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Insert at front\n");
+        printf("2. Insert at end\n");
+        printf("3. Delete from front\n");
+        printf("4. Delete from end\n");
+        printf("5. Display the list\n");
+        printf("6. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                printf("Enter the value to insert at the beginning: ");
+                printf("Enter value to insert at front: ");
                 scanf("%d", &value);
-                insertAtBeginning(&head, value);
+                insert_front(&head, value);
                 break;
             case 2:
-                printf("Enter the value to insert at the end: ");
+                printf("Enter value to insert at end: ");
                 scanf("%d", &value);
-                insertAtEnd(&head, value);
+                insert_end(&head, value);
                 break;
             case 3:
-                deleteAtBeginning(&head);
+                delete_front(&head);
                 break;
             case 4:
-                printList(head);
+                delete_end(&head);
                 break;
             case 5:
-                printf("Exiting...\n");
+                display(head);
                 break;
+            case 6:
+                exit(0);
             default:
-                printf("Invalid choice! Please try again.\n");
+                printf("Invalid choice, try again\n");
         }
-    } while (choice != 5);
+    }
 
     return 0;
 }
