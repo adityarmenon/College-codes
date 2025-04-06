@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int a[30][30], max[30][30], need[30][30], vis[30], avail[30], seq[30], dupavail[30];
+int a[30][30], m[30][30], n[30][30], v[30], av[30], s[30], dav[30];
 int i, j, k, p, r, ind = 0;
 
 void main() {
@@ -17,37 +17,37 @@ void main() {
     printf("Enter the max allocation matrix:\n");
     for (i = 0; i < p; i++)
         for (j = 0; j < r; j++)
-            scanf("%d", &max[i][j]);
+            scanf("%d", &m[i][j]);
 
     for (i = 0; i < p; i++)
         for (j = 0; j < r; j++)
-            need[i][j] = max[i][j] - a[i][j];
+            n[i][j] = m[i][j] - a[i][j];
 
     printf("Enter the available resources: ");
     for (i = 0; i < r; i++) {
-        scanf("%d", &avail[i]);
-        dupavail[i] = avail[i];
+        scanf("%d", &av[i]);
+        dav[i] = av[i];
     }
 
     for (i = 0; i < p; i++)
-        vis[i] = 0;
+        v[i] = 0;
 
-    // Banker's Algorithm for Safe Sequence
+    // Safe sequence check
     for (k = 0; k < p; k++) {
         for (i = 0; i < p; i++) {
-            if (vis[i] == 0) {
+            if (v[i] == 0) {
                 int flag = 0;
                 for (j = 0; j < r; j++)
-                    if (need[i][j] > avail[j]) {
+                    if (n[i][j] > av[j]) {
                         flag = 1;
                         break;
                     }
 
                 if (flag == 0) {
-                    vis[i] = 1;
-                    seq[ind++] = i;
+                    v[i] = 1;
+                    s[ind++] = i;
                     for (int x = 0; x < r; x++)
-                        avail[x] += a[i][x];
+                        av[x] += a[i][x];
                 }
             }
         }
@@ -55,7 +55,7 @@ void main() {
 
     int flag = 1;
     for (i = 0; i < p; i++)
-        if (vis[i] == 0) {
+        if (v[i] == 0) {
             flag = 0;
             printf("Not a safe sequence\n");
             return;
@@ -63,10 +63,10 @@ void main() {
 
     printf("Safe sequence: ");
     for (i = 0; i < p - 1; i++)
-        printf("P%d -> ", seq[i]);
-    printf("P%d\n", seq[i]);
+        printf("P%d -> ", s[i]);
+    printf("P%d\n", s[i]);
 
-    // Handling resource request
+    // Handle request
     int req, new[r];
     printf("Enter request process: ");
     scanf("%d", &req);
@@ -75,7 +75,7 @@ void main() {
         scanf("%d", &new[i]);
 
     for (j = 0; j < r; j++) {
-        if (new[j] > need[req][j]) {
+        if (new[j] > n[req][j]) {
             printf("Error: Request exceeds need.\n");
             return;
         }
@@ -83,35 +83,35 @@ void main() {
 
     for (i = 0; i < r; i++) {
         a[req][i] += new[i];
-        need[req][i] -= new[i];
-        avail[i] -= new[i];
+        n[req][i] -= new[i];
+        av[i] -= new[i];
     }
 
     printf("Updated Available Resources: ");
     for (i = 0; i < r; i++)
-        printf("%d ", avail[i]);
+        printf("%d ", av[i]);
     printf("\n");
 
-    // Checking for new safe sequence
+    // Re-check safe sequence
     for (i = 0; i < p; i++)
-        vis[i] = 0;
+        v[i] = 0;
     ind = 0;
 
     for (k = 0; k < p; k++) {
         for (i = 0; i < p; i++) {
-            if (vis[i] == 0) {
+            if (v[i] == 0) {
                 int flag = 0;
                 for (j = 0; j < r; j++)
-                    if (need[i][j] > avail[j]) {
+                    if (n[i][j] > av[j]) {
                         flag = 1;
                         break;
                     }
 
                 if (flag == 0) {
-                    vis[i] = 1;
-                    seq[ind++] = i;
+                    v[i] = 1;
+                    s[ind++] = i;
                     for (int x = 0; x < r; x++)
-                        avail[x] += a[i][x];
+                        av[x] += a[i][x];
                 }
             }
         }
@@ -119,7 +119,7 @@ void main() {
 
     flag = 1;
     for (i = 0; i < p; i++)
-        if (vis[i] == 0) {
+        if (v[i] == 0) {
             flag = 0;
             printf("Not a safe sequence\n");
             return;
@@ -127,6 +127,6 @@ void main() {
 
     printf("New Safe sequence: ");
     for (i = 0; i < p - 1; i++)
-        printf("P%d -> ", seq[i]);
-    printf("P%d\n", seq[i]);
+        printf("P%d -> ", s[i]);
+    printf("P%d\n", s[i]);
 }
